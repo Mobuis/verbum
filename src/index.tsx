@@ -1,25 +1,26 @@
-import EditorComposer from './EditorComposer';
+import { $generateHtmlFromNodes } from '@lexical/html';
 import Editor from './Editor';
+import EditorComposer from './EditorComposer';
 import ToolbarPlugin from './plugins/ToolbarPlugin/ToolbarPlugin';
 
 import {
   AlignDropdown,
   BackgroundColorPicker,
-  BlockFormatDropdown,
+  // BlockFormatDropdown,
   BoldButton,
   CodeFormatButton,
-  CodeLanguageDropdown,
+  // CodeLanguageDropdown,
   FloatingLinkEditor,
   FontFamilyDropdown,
   FontSizeDropdown,
   InsertDropdown,
   InsertLinkButton,
   ItalicButton,
-  RedoButton,
+  // RedoButton,
   TextColorPicker,
   TextFormatDropdown,
+  // UndoButton,
   UnderlineButton,
-  UndoButton,
 } from './plugins/ToolbarPlugin/components';
 
 import * as ToolbarTypes from './types';
@@ -44,4 +45,5 @@ export {
   UnderlineButton,
   ToolbarTypes,
   Divider,
+  $generateHtmlFromNodes,
 };

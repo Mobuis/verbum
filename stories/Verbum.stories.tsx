@@ -1,25 +1,20 @@
 import React from 'react';
-import { EditorComposer, Editor, Divider } from '../src';
+import { Divider, Editor, EditorComposer } from '../src';
 import ToolbarPlugin from '../src/plugins/ToolbarPlugin/ToolbarPlugin';
 
 import {
   AlignDropdown,
   BackgroundColorPicker,
-  BlockFormatDropdown,
   BoldButton,
   CodeFormatButton,
-  CodeLanguageDropdown,
-  FloatingLinkEditor,
   FontFamilyDropdown,
   FontSizeDropdown,
   InsertDropdown,
   InsertLinkButton,
   ItalicButton,
-  RedoButton,
   TextColorPicker,
   TextFormatDropdown,
   UnderlineButton,
-  UndoButton,
 } from '../src/plugins/ToolbarPlugin/components';
 
 export default {
@@ -28,7 +23,7 @@ export default {
 
 export const FullEditor = () => (
   <EditorComposer>
-    <Editor>
+    <Editor hashtagsEnabled={true} maxLength={10}>
       <ToolbarPlugin>
         <FontFamilyDropdown />
         <FontSizeDropdown />

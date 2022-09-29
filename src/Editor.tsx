@@ -13,15 +13,19 @@ import { ClearEditorPlugin } from '@lexical/react/LexicalClearEditorPlugin';
 import { HashtagPlugin } from '@lexical/react/LexicalHashtagPlugin';
 import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin';
 import { ListPlugin } from '@lexical/react/LexicalListPlugin';
-import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
-import React, { ReactNode, useEffect, useState } from 'react';
-import { useRef } from 'react';
+import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
+import React, { ReactNode, useEffect, useRef, useState } from 'react';
 
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
+import { LexicalEditor } from 'lexical';
+import EditorContext from './context/EditorContext';
 import { useSettings } from './context/SettingsContext';
 import { useSharedHistoryContext } from './context/SharedHistoryContext';
 import ActionsPlugin from './plugins/ActionsPlugin';
 import AutoLinkPlugin from './plugins/AutoLinkPlugin';
+import { CharacterLimitPlugin } from './plugins/CharacterLimitPlugin';
 import CharacterStylesPopupPlugin from './plugins/CharacterStylesPopupPlugin';
 import ClickableLinkPlugin from './plugins/ClickableLinkPlugin';
 import CodeHighlightPlugin from './plugins/CodeHighlightPlugin';
@@ -33,10 +37,6 @@ import SpeechToTextPlugin from './plugins/SpeechToTextPlugin';
 import TabFocusPlugin from './plugins/TabFocusPlugin';
 import ContentEditable from './ui/ContentEditable';
 import Placeholder from './ui/Placeholder';
-import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
-import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import EditorContext from './context/EditorContext';
-import { LexicalEditor } from 'lexical';
 
 interface IEditorProps {
   children?: ReactNode;
@@ -49,6 +49,7 @@ interface IEditorProps {
   initialEditorState?: string;
   isReadOnly?: boolean;
   onChange?: (editorState: string, editorInstance?: LexicalEditor) => void;
+  maxLength?: number;
 }
 
 const Editor = ({
@@ -61,6 +62,7 @@ const Editor = ({
   placeholder = '',
   initialEditorState,
   isReadOnly = false,
+  maxLength,
   onChange,
 }: IEditorProps) => {
   const [editor] = useLexicalComposerContext();
@@ -115,6 +117,7 @@ const Editor = ({
           <ClickableLinkPlugin />
           <CharacterStylesPopupPlugin />
           <TabFocusPlugin />
+          {maxLength && <CharacterLimitPlugin maxLength={maxLength} />}
         </>
 
         <HistoryPlugin externalHistoryState={historyState} />
