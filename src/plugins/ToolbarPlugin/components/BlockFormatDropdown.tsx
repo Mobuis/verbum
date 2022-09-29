@@ -6,17 +6,16 @@ import {
   REMOVE_LIST_COMMAND,
 } from '@lexical/list';
 import { $createHeadingNode, $createQuoteNode } from '@lexical/rich-text';
-import { $wrapLeafNodesInElements } from '@lexical/selection';
+import { $wrapNodes } from '@lexical/selection';
 import {
   $createParagraphNode,
   $getSelection,
   $isRangeSelection,
-  LexicalEditor,
 } from 'lexical';
 import React, { useContext } from 'react';
 import EditorContext from '../../../context/EditorContext';
-import DropDown from '../../../ui/DropDown';
 import ToolbarContext from '../../../context/ToolbarContext';
+import DropDown from '../../../ui/DropDown';
 
 const blockTypeToBlockName = {
   bullet: 'Bulleted List',
@@ -41,7 +40,7 @@ const BlockFormatDropdown = () => {
         const selection = $getSelection();
 
         if ($isRangeSelection(selection)) {
-          $wrapLeafNodesInElements(selection, () => $createParagraphNode());
+          $wrapNodes(selection, () => $createParagraphNode());
         }
       });
     }
@@ -53,9 +52,7 @@ const BlockFormatDropdown = () => {
         const selection = $getSelection();
 
         if ($isRangeSelection(selection)) {
-          $wrapLeafNodesInElements(selection, () =>
-            $createHeadingNode(headingSize)
-          );
+          $wrapNodes(selection, () => $createHeadingNode(headingSize));
         }
       });
     }
@@ -91,7 +88,7 @@ const BlockFormatDropdown = () => {
         const selection = $getSelection();
 
         if ($isRangeSelection(selection)) {
-          $wrapLeafNodesInElements(selection, () => $createQuoteNode());
+          $wrapNodes(selection, () => $createQuoteNode());
         }
       });
     }
@@ -104,7 +101,7 @@ const BlockFormatDropdown = () => {
 
         if ($isRangeSelection(selection)) {
           if (selection.isCollapsed()) {
-            $wrapLeafNodesInElements(selection, () => $createCodeNode());
+            $wrapNodes(selection, () => $createCodeNode());
           } else {
             const textContent = selection.getTextContent();
             const codeNode = $createCodeNode();
@@ -129,17 +126,29 @@ const BlockFormatDropdown = () => {
         <span className="text">Normal</span>
         {blockType === 'paragraph' && <span className="active" />}
       </button>
-      <button className="item" onClick={() => formatHeading('h1')} type="button">
+      <button
+        className="item"
+        onClick={() => formatHeading('h1')}
+        type="button"
+      >
         <span className="icon h1" />
         <span className="text">Heading 1</span>
         {blockType === 'h1' && <span className="active" />}
       </button>
-      <button className="item" onClick={() => formatHeading('h2')} type="button">
+      <button
+        className="item"
+        onClick={() => formatHeading('h2')}
+        type="button"
+      >
         <span className="icon h2" />
         <span className="text">Heading 2</span>
         {blockType === 'h2' && <span className="active" />}
       </button>
-      <button className="item" onClick={() => formatHeading('h3')} type="button">
+      <button
+        className="item"
+        onClick={() => formatHeading('h3')}
+        type="button"
+      >
         <span className="icon h3" />
         <span className="text">Heading 3</span>
         {blockType === 'h3' && <span className="active" />}

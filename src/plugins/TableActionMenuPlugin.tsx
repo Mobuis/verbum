@@ -26,9 +26,9 @@ import {
 } from '@lexical/table';
 import {
   $getSelection,
-  $isGridSelection,
   $isRangeSelection,
   $setSelection,
+  DEPRECATED_$isGridSelection,
 } from 'lexical';
 import * as React from 'react';
 import { ReactPortal, useCallback, useEffect, useRef, useState } from 'react';
@@ -72,7 +72,7 @@ function TableActionMenu({
     editor.getEditorState().read(() => {
       const selection = $getSelection();
 
-      if ($isGridSelection(selection)) {
+      if (DEPRECATED_$isGridSelection(selection)) {
         const selectionShape = selection.getShape();
 
         updateSelectionCounts({
@@ -153,7 +153,7 @@ function TableActionMenu({
 
         let tableRowIndex;
 
-        if ($isGridSelection(selection)) {
+        if (DEPRECATED_$isGridSelection(selection)) {
           const selectionShape = selection.getShape();
           tableRowIndex = shouldInsertAfter
             ? selectionShape.toY
@@ -189,7 +189,7 @@ function TableActionMenu({
 
         let tableColumnIndex;
 
-        if ($isGridSelection(selection)) {
+        if (DEPRECATED_$isGridSelection(selection)) {
           const selectionShape = selection.getShape();
           tableColumnIndex = shouldInsertAfter
             ? selectionShape.toX
@@ -199,11 +199,14 @@ function TableActionMenu({
             $getTableColumnIndexFromTableCellNode(tableCellNode);
         }
 
+        const grid = $getElementGridForTableNode(editor, tableNode);
+
         $insertTableColumn(
           tableNode,
           tableColumnIndex,
           shouldInsertAfter,
-          selectionCounts.columns
+          selectionCounts.columns,
+          grid
         );
 
         clearTableSelection();
@@ -332,14 +335,22 @@ function TableActionMenu({
         e.stopPropagation();
       }}
     >
-      <button className="item" onClick={() => insertTableRowAtSelection(false)} type="button">
+      <button
+        className="item"
+        onClick={() => insertTableRowAtSelection(false)}
+        type="button"
+      >
         <span className="text">
           Insert{' '}
           {selectionCounts.rows === 1 ? 'row' : `${selectionCounts.rows} rows`}{' '}
           above
         </span>
       </button>
-      <button className="item" onClick={() => insertTableRowAtSelection(true)} type="button">
+      <button
+        className="item"
+        onClick={() => insertTableRowAtSelection(true)}
+        type="button"
+      >
         <span className="text">
           Insert{' '}
           {selectionCounts.rows === 1 ? 'row' : `${selectionCounts.rows} rows`}{' '}
@@ -374,17 +385,33 @@ function TableActionMenu({
         </span>
       </button>
       <hr />
-      <button className="item" onClick={() => deleteTableColumnAtSelection()} type="button">
+      <button
+        className="item"
+        onClick={() => deleteTableColumnAtSelection()}
+        type="button"
+      >
         <span className="text">Delete column</span>
       </button>
-      <button className="item" onClick={() => deleteTableRowAtSelection()} type="button">
+      <button
+        className="item"
+        onClick={() => deleteTableRowAtSelection()}
+        type="button"
+      >
         <span className="text">Delete row</span>
       </button>
-      <button className="item" onClick={() => deleteTableAtSelection()} type="button">
+      <button
+        className="item"
+        onClick={() => deleteTableAtSelection()}
+        type="button"
+      >
         <span className="text">Delete table</span>
       </button>
       <hr />
-      <button className="item" onClick={() => toggleTableRowIsHeader()} type="button">
+      <button
+        className="item"
+        onClick={() => toggleTableRowIsHeader()}
+        type="button"
+      >
         <span className="text">
           {(tableCellNode.__headerState & TableCellHeaderStates.ROW) ===
           TableCellHeaderStates.ROW
@@ -393,7 +420,11 @@ function TableActionMenu({
           row header
         </span>
       </button>
-      <button className="item" onClick={() => toggleTableColumnIsHeader()} type="button">
+      <button
+        className="item"
+        onClick={() => toggleTableColumnIsHeader()}
+        type="button"
+      >
         <span className="text">
           {(tableCellNode.__headerState & TableCellHeaderStates.COLUMN) ===
           TableCellHeaderStates.COLUMN

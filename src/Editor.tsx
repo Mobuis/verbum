@@ -46,8 +46,7 @@ interface IEditorProps {
   actionsEnabled?: boolean;
   placeholder?: string;
   listMaxIndent?: number;
-  initialEditorState?: string;
-  isReadOnly?: boolean;
+  isEditable?: boolean;
   onChange?: (editorState: string, editorInstance?: LexicalEditor) => void;
   maxLength?: number;
 }
@@ -60,8 +59,7 @@ const Editor = ({
   actionsEnabled = false,
   listMaxIndent = 7,
   placeholder = '',
-  initialEditorState,
-  isReadOnly = false,
+  isEditable = true,
   maxLength,
   onChange,
 }: IEditorProps) => {
@@ -77,7 +75,7 @@ const Editor = ({
   const scrollRef = useRef(null);
 
   useEffect(() => {
-    editor.setReadOnly(isReadOnly);
+    editor.setEditable(isEditable);
   }, []);
 
   return (
@@ -99,10 +97,8 @@ const Editor = ({
           <RichTextPlugin
             contentEditable={<ContentEditable />}
             placeholder={placeholderComponent}
-            initialEditorState={initialEditorState}
           />
           <OnChangePlugin
-            ignoreInitialChange={false}
             onChange={(editorState) => {
               onChange?.(JSON.stringify(editorState), activeEditor);
               return (editorStateRef.current = editorState);
