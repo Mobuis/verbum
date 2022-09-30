@@ -49,6 +49,7 @@ interface IEditorProps {
   isEditable?: boolean;
   onChange?: (editorState: string, editorInstance?: LexicalEditor) => void;
   maxLength?: number;
+  defaultValue?: string;
 }
 
 const Editor = ({
@@ -61,6 +62,7 @@ const Editor = ({
   placeholder = '',
   isEditable = true,
   maxLength,
+  defaultValue,
   onChange,
 }: IEditorProps) => {
   const [editor] = useLexicalComposerContext();
@@ -77,6 +79,13 @@ const Editor = ({
   useEffect(() => {
     editor.setEditable(isEditable);
   }, []);
+
+  useEffect(() => {
+    if (editor && defaultValue) {
+      const initialEditorState = editor.parseEditorState(defaultValue);
+      editor.setEditorState(initialEditorState);
+    }
+  }, [editor]);
 
   return (
     <EditorContext.Provider

@@ -23,7 +23,7 @@ export default {
 
 export const FullEditor = () => (
   <EditorComposer>
-    <Editor hashtagsEnabled={true} maxLength={10}>
+    <Editor hashtagsEnabled={true} maxLength={100}>
       <ToolbarPlugin>
         <FontFamilyDropdown />
         <FontSizeDropdown />
