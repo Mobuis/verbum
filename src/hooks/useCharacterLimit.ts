@@ -58,6 +58,21 @@ export function useCharacterLimit(
   } = optional;
 
   useEffect(() => {
+    setTimeout(() => {
+      let text = editor.getEditorState().read($rootTextContent);
+      const offset = findOffset(text, maxCharacters, strlen);
+      editor.update(
+        () => {
+          $wrapOverflowedNodes(offset, maxCharacters, remainingCharacters);
+        },
+        {
+          tag: 'history-merge',
+        }
+      );
+    }, 0);
+  }, []);
+
+  useEffect(() => {
     if (!editor.hasNodes([OverflowNode])) {
       invariant(
         false,
