@@ -8,8 +8,8 @@
 
 import './ColorPicker.css';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
 import * as React from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import DropDown from './DropDown';
 
@@ -89,10 +89,10 @@ export default function ColorPicker({
     onChange(selfColor.hex);
   }, [selfColor, onChange]);
 
-  useEffect(() => {
-    if (color === undefined) return;
-    setSelfColor(transformColor('hex', color));
-  }, [color]);
+  // useEffect(() => {
+  //   if (color === undefined) return;
+  //   setSelfColor(transformColor('hex', color));
+  // }, [color]);
 
   return (
     <DropDown {...rest} stopCloseOnClickSelf={true}>
