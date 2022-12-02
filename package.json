@@ -26,7 +26,7 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "format": "prettier --write 'src/**/*.{ts,tsx,scss,css,json}'",
-    "isready": "npm run format && npm run build"
+    "isready": "yarn run format && yarn run build"
   },
   "peerDependencies": {
     "react": "^18.1.0",
